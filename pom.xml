@@ -6,7 +6,7 @@
 
     <groupId>com.github.michaelboyles</groupId>
     <artifactId>dgs-codegen-maven-plugin</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>maven-plugin</packaging>
 
     <properties>
