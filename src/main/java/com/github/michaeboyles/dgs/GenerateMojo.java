@@ -72,12 +72,14 @@ public class GenerateMojo extends AbstractMojo
     @Parameter
     private boolean shortProjectionNames = false;
 
-    /* These are available in an unreleased version
     @Parameter
     private boolean generateDataTypes = true;
+
     @Parameter
     private int maxProjectionDepth = 10;
-     */
+
+    @Parameter
+    private boolean generateInterfaces = false;
 
     @Parameter(defaultValue = "${project}")
     private MavenProject project;
@@ -108,11 +110,14 @@ public class GenerateMojo extends AbstractMojo
             Language.valueOf(language.toUpperCase()),
             generateBoxedTypes,
             generateClient,
+            generateInterfaces,
             typeMapping,
             new HashSet<>(includeQueries),
             new HashSet<>(includeMutations),
             skipEntityQueries,
-            shortProjectionNames
+            shortProjectionNames,
+            generateDataTypes,
+            maxProjectionDepth
         );
 
         getLog().info("Codegen config: " + config);

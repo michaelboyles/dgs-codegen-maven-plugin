@@ -12,7 +12,7 @@ Add the following plugin to your Maven build:
 <plugin>
     <groupId>com.github.michaelboyles</groupId>
     <artifactId>dgs-codegen-maven-plugin</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <executions>
         <execution>
             <goals>
@@ -34,3 +34,39 @@ The dependency is available from [jitpack.io](https://jitpack.io/). You can use 
     <url>https://jitpack.io</url>
 </pluginRepository>
 ```
+
+## Goals
+
+### dgs-codegen-maven-plugin:generate
+
+Generates classes for the [DGS framework](https://github.com/Netflix/dgs-framework).
+
+Binds by default to the [lifecycle phase](http://maven.apache.org/ref/3.6.3/maven-core/lifecycles.html): generate-sources. 
+
+**Required Parameters**
+
+| Property    | Type        | Since | Description                                   |
+| ----------- | ----------- | ----- | --------------------------------------------- |
+| packageName | String      | 1.0.0 | The package name to use for generated classes |
+
+**Optional Parameters**
+
+| Property                   | Type     | Since | Description                                   |
+| -------------------------- | -------- | ----- | --------------------------------------------- |
+| schemaPaths                | File[]   | 1.0.0 | Path to directory/directories containing GraphQL schemas. Default: `${project.build.sourceDirectory}/../resources/schema` |
+| subPackageNameClient       | String   | 1.0.0 | The package under `packageName` to place client classes. Default: `client` |
+| subPackageNameDatafetchers | String   | 1.0.0 | The package under `packageName` to place data fetcher classes. Default: `datafetchers` |
+| subPackageNameTypes        | String   | 1.0.0 | The package under `packageName` to place types. Default: `types` |
+| language                   | String   | 1.0.0 | The programming language that generated classes should use. Valid values are KOTLIN and JAVA. Default is inferred from the classpath |
+| typeMapping                | Map      | 1.0.0 | A map from GraphQL type name to Java class name, e.g. for scalars |
+| generateBoxedTypes         | boolean  | 1.0.0 | Whether to use boxed types, e.g. `java.lang.Integer`, for non-nullable fields (nullable fields must use boxed types, so that `null` can represent absence of a value). Default: `false` |
+| generateClient             | boolean  | 1.0.0 | Whether to generate classes for a GraphQL client. Default: `false` |
+| generateDataTypes          | boolean  | 1.1.0 | Generate data types. Useful for only generating a Query API. Input types are still generated when `generateClient` is true. Default: `true` |
+| generateInterfaces         | boolean  | 1.1.0 | Whether to generate additional interfaces with an 'I' prefix for classes. Default: `false` |
+| outputDir                  | File     | 1.0.0 | The directory to place generated classes. Default: `${project.build.directory}/generated-sources/annotations/` |
+| examplesOutputDir          | File     | 1.0.0 | The directory to place generated examples. Default: `${project.build.directory}/generated-examples` |
+| includeQueries             | String[] | 1.0.0 | If present, only generate the queries specified in this list |
+| includeMutations           | String[] | 1.0.0 | If present, only generate the mutations in this list |
+| skipEntityQueries          | boolean  | 1.0.0 | Whether to skip [entity](https://www.apollographql.com/docs/federation/entities/) queries. Default: `false` |
+| shortProjectionNames       | boolean  | 1.0.0 | Whether to shorten projection names. See [`ClassnameShortener`](https://github.com/Netflix/dgs-codegen/blob/master/graphql-dgs-codegen-core/src/main/kotlin/com/netflix/graphql/dgs/codegen/generators/shared/ClassnameShortener.kt). e.g. "ThisIsATest" becomes "ThIsATe". Default: `false` |
+| maxProjectionDepth         | int      | 1.1.0 | Maximum projection depth to generate. Useful for (federated) schemas with very deep nesting. Default: `10` |
