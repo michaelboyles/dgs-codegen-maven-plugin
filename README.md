@@ -12,7 +12,7 @@ Add the following plugin to your Maven build:
 <plugin>
     <groupId>com.github.michaelboyles</groupId>
     <artifactId>dgs-codegen-maven-plugin</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <executions>
         <execution>
             <goals>
@@ -61,9 +61,12 @@ Binds by default to the [lifecycle phase](http://maven.apache.org/ref/3.6.3/mave
 | typeMapping                | Map      | 1.0.0 | A map from GraphQL type name to Java class name, e.g. for scalars |
 | generateBoxedTypes         | boolean  | 1.0.0 | Whether to use boxed types, e.g. `java.lang.Integer`, for non-nullable fields (nullable fields must use boxed types, so that `null` can represent absence of a value). Default: `false` |
 | generateClient             | boolean  | 1.0.0 | Whether to generate classes for a GraphQL client. Default: `false` |
+| generateDataTypes          | boolean  | 1.1.0 | Generate data types. Useful for only generating a Query API. Input types are still generated when `generateClient` is true. Default: `true` |
+| generateInterfaces         | boolean  | 1.1.0 | Whether to generate additional interfaces with an 'I' prefix for classes. Default: `false` |
 | outputDir                  | File     | 1.0.0 | The directory to place generated classes. Default: `${project.build.directory}/generated-sources/annotations/` |
 | examplesOutputDir          | File     | 1.0.0 | The directory to place generated examples. Default: `${project.build.directory}/generated-examples` |
 | includeQueries             | String[] | 1.0.0 | If present, only generate the queries specified in this list |
 | includeMutations           | String[] | 1.0.0 | If present, only generate the mutations in this list |
 | skipEntityQueries          | boolean  | 1.0.0 | Whether to skip [entity](https://www.apollographql.com/docs/federation/entities/) queries. Default: `false` |
 | shortProjectionNames       | boolean  | 1.0.0 | Whether to shorten projection names. See [`ClassnameShortener`](https://github.com/Netflix/dgs-codegen/blob/master/graphql-dgs-codegen-core/src/main/kotlin/com/netflix/graphql/dgs/codegen/generators/shared/ClassnameShortener.kt). e.g. "ThisIsATest" becomes "ThIsATe". Default: `false` |
+| maxProjectionDepth         | int      | 1.1.0 | Maximum projection depth to generate. Useful for (federated) schemas with very deep nesting. Default: `10` |
