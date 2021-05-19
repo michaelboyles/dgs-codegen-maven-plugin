@@ -12,7 +12,7 @@ Add the following plugin to your Maven build:
 <plugin>
     <groupId>com.github.michaelboyles</groupId>
     <artifactId>dgs-codegen-maven-plugin</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <executions>
         <execution>
             <goals>
@@ -69,4 +69,7 @@ Binds by default to the [lifecycle phase](http://maven.apache.org/ref/3.6.3/mave
 | includeMutations           | String[] | 1.0.0 | If present, only generate the mutations in this list |
 | skipEntityQueries          | boolean  | 1.0.0 | Whether to skip [entity](https://www.apollographql.com/docs/federation/entities/) queries. Default: `false` |
 | shortProjectionNames       | boolean  | 1.0.0 | Whether to shorten projection names. See [`ClassnameShortener`](https://github.com/Netflix/dgs-codegen/blob/master/graphql-dgs-codegen-core/src/main/kotlin/com/netflix/graphql/dgs/codegen/generators/shared/ClassnameShortener.kt). e.g. "ThisIsATest" becomes "ThIsATe". Default: `false` |
+| omitNullInputFields        | boolean  | 1.2.0 | If `true`, fields with null values won't be included in `toString()` output. Default: `false` |
 | maxProjectionDepth         | int      | 1.1.0 | Maximum projection depth to generate. Useful for (federated) schemas with very deep nesting. Default: `10` |
+| kotlinAllFieldsOptional    | boolean  | 1.2.0 | If `true`, generates nullable fields in Kotlin even when a field is defined non-nullable in the schema. Default: `false` |
+| snakeCaseConstantNames     | boolean  | 1.2.0 | If `true`, constants will be named in snake case e.g. `PERSON_META_DATA`. If false, they will be named without underscores, e.g. `PERSONMETADATA`. Default: `false` |

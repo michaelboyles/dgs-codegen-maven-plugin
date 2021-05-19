@@ -79,7 +79,16 @@ public class GenerateMojo extends AbstractMojo
     private int maxProjectionDepth = 10;
 
     @Parameter
+    private boolean omitNullInputFields = false;
+
+    @Parameter
     private boolean generateInterfaces = false;
+
+    @Parameter
+    private boolean kotlinAllFieldsOptional = false;
+
+    @Parameter
+    private boolean snakeCaseConstantNames = false;
 
     @Parameter(defaultValue = "${project}")
     private MavenProject project;
@@ -117,7 +126,10 @@ public class GenerateMojo extends AbstractMojo
             skipEntityQueries,
             shortProjectionNames,
             generateDataTypes,
-            maxProjectionDepth
+            omitNullInputFields,
+            maxProjectionDepth,
+            kotlinAllFieldsOptional,
+            snakeCaseConstantNames
         );
 
         getLog().info("Codegen config: " + config);
