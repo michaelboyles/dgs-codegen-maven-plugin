@@ -67,6 +67,9 @@ public class GenerateMojo extends AbstractMojo
     private List<String> includeMutations = new ArrayList<>();
 
     @Parameter
+    private List<String> includeSubscriptions = new ArrayList<>();
+
+    @Parameter
     private boolean skipEntityQueries = false;
 
     @Parameter
@@ -89,6 +92,9 @@ public class GenerateMojo extends AbstractMojo
 
     @Parameter
     private boolean snakeCaseConstantNames = false;
+
+    @Parameter
+    private boolean generateInterfaceSetters = true;
 
     @Parameter(defaultValue = "${project}")
     private MavenProject project;
@@ -123,13 +129,15 @@ public class GenerateMojo extends AbstractMojo
             typeMapping,
             new HashSet<>(includeQueries),
             new HashSet<>(includeMutations),
+            new HashSet<>(includeSubscriptions),
             skipEntityQueries,
             shortProjectionNames,
             generateDataTypes,
             omitNullInputFields,
             maxProjectionDepth,
             kotlinAllFieldsOptional,
-            snakeCaseConstantNames
+            snakeCaseConstantNames,
+            generateInterfaceSetters
         );
 
         getLog().info("Codegen config: " + config);

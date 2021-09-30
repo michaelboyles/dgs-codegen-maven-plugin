@@ -3,7 +3,8 @@ package com.github.michaelboyles.dgs.it;
 import org.junit.Test;
 
 import com.github.michaeboyles.dgs.generated.DgsConstants;
-import com.github.michaeboyles.dgs.generated.types.Person;
+import com.github.michaeboyles.dgs.generated.ty.IPerson;
+import com.github.michaeboyles.dgs.generated.ty.Person;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -16,7 +17,7 @@ public class GeneratedTest {
 
     @Test
     public void builder() {
-        Person person = Person.newBuilder()
+        IPerson person = Person.newBuilder()
             .name("Michael")
             .age(28)
             .likesDogs(true)
