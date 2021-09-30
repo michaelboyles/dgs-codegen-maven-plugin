@@ -81,4 +81,5 @@ Binds by default to the [lifecycle phase](http://maven.apache.org/ref/3.6.3/mave
 It's likely that the Gradle plugin will be updated more frequently than I update this Maven plugin. Provided their
 changes are backwards-compatible, you don't have to wait for a release of the Maven plugin to pick up a change. You can
 simply [override the version](https://blog.sonatype.com/2008/04/how-to-override-a-plugins-dependency-in-maven/) of
-`graphql-dgs-codegen-core` to use the newer version. There's an example of how to do that [here](TODO).
+`graphql-dgs-codegen-core` to use the newer version. There's an example of how to do that
+[here](https://github.com/michaelboyles/dgs-codegen-maven-plugin/blob/develop/src/it/basicTest/pom.xml#L42).
