@@ -28,9 +28,24 @@
                         </goals>
                         <configuration>
                             <packageName>com.github.michaeboyles.dgs.generated</packageName>
+                            <generateBoxedTypes>true</generateBoxedTypes>
+                            <subPackageNameTypes>ty</subPackageNameTypes>
+                            <language>java</language>
+                            <generateBoxedTypes>true</generateBoxedTypes>
+                            <generateClient>true</generateClient>
+                            <generateInterfaces>true</generateInterfaces>
+                            <generateInterfaceSetters>false</generateInterfaceSetters>
                         </configuration>
                     </execution>
                 </executions>
+                <dependencies>
+                    <!-- Override the version of core specified by the plugin to a potentially newer one -->
+                    <dependency>
+                        <groupId>com.netflix.graphql.dgs.codegen</groupId>
+                        <artifactId>graphql-dgs-codegen-core</artifactId>
+                        <version>5.1.2</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
@@ -41,6 +56,11 @@
             <artifactId>junit</artifactId>
             <version>4.12</version>
             <scope>test</scope>
+        </dependency>
+        <dependency> <!-- Needed for some DGS generated classes -->
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.12.5</version>
         </dependency>
     </dependencies>
 </project>
