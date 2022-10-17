@@ -10,19 +10,18 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
+
+import static com.github.michaeboyles.dgs.FileUtil.getCanonicalFile;
 
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
-@SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal", "MismatchedQueryAndUpdateOfCollection", "unused","MismatchedReadAndWriteOfArray"})
+@SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal", "MismatchedQueryAndUpdateOfCollection", "unused"})
 public class GenerateMojo extends AbstractMojo
 {
     @Parameter(defaultValue = "${project.build.sourceDirectory}/../resources/schema")
@@ -101,16 +100,7 @@ public class GenerateMojo extends AbstractMojo
 
     @Override
     public void execute() {
-
-        Set<File> schemaPaths = Arrays.stream(this.schemaPaths)
-            .map(this::getCanonicalFile)
-            .collect(Collectors.toSet());
-
-        for (File schemaPath : schemaPaths) {
-            if (!schemaPath.exists()) {
-                getLog().warn("Schema location " + schemaPath + " does not exist");
-            }
-        }
+        Set<File> schemaPaths = FileUtil.getSchemas(this.schemaPaths, getLog());
 
         CodeGenConfig config = new CodeGenConfig(
             Collections.emptySet(),
@@ -144,14 +134,6 @@ public class GenerateMojo extends AbstractMojo
 
         new CodeGen(config).generate();
         project.addCompileSourceRoot(getCanonicalFile(outputDir).getAbsolutePath());
-    }
-
-    private File getCanonicalFile(File file) {
-        try {
-            return file.getCanonicalFile();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private boolean hasKotlinPluginWrapperClass() {
