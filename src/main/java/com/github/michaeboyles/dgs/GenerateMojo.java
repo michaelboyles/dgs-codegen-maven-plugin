@@ -88,6 +88,12 @@ public class GenerateMojo extends AbstractMojo
     private boolean generateInterfaces = false;
 
     @Parameter
+    private boolean generateKotlinNullableClasses = false;
+
+    @Parameter
+    private boolean generateKotlinClosureProjections = false;
+
+    @Parameter
     private boolean kotlinAllFieldsOptional = false;
 
     @Parameter
@@ -95,6 +101,27 @@ public class GenerateMojo extends AbstractMojo
 
     @Parameter
     private boolean generateInterfaceSetters = true;
+
+    @Parameter
+    private Map<String, String> includeImports = new HashMap<>();
+
+    @Parameter
+    private Map<String, Map<String, String>> includeEnumImports = new HashMap<>();
+
+    @Parameter
+    private boolean generateCustomAnnotations = false;
+
+    @Parameter
+    private boolean javaGenerateAllConstructor = true;
+
+    @Parameter
+    private boolean implementSerializable = false;
+
+    @Parameter
+    private boolean addGeneratedAnnotation = false;
+
+    @Parameter
+    private boolean addDeprecatedAnnotation = false;
 
     @Parameter(defaultValue = "${project}")
     private MavenProject project;
@@ -113,11 +140,12 @@ public class GenerateMojo extends AbstractMojo
         }
 
         CodeGenConfig config = new CodeGenConfig(
-            Collections.emptySet(),
+            /* schemas */ Collections.emptySet(),
             schemaPaths,
+            Collections.emptyList(),
             getCanonicalFile(outputDir).toPath(),
             getCanonicalFile(examplesOutputDir).toPath(),
-            true,
+            /* writeToFiles */ true,
             packageName,
             subPackageNameClient,
             subPackageNameDatafetchers,
@@ -126,6 +154,8 @@ public class GenerateMojo extends AbstractMojo
             generateBoxedTypes,
             generateClient,
             generateInterfaces,
+            generateKotlinNullableClasses,
+            generateKotlinClosureProjections,
             typeMapping,
             new HashSet<>(includeQueries),
             new HashSet<>(includeMutations),
@@ -137,7 +167,14 @@ public class GenerateMojo extends AbstractMojo
             maxProjectionDepth,
             kotlinAllFieldsOptional,
             snakeCaseConstantNames,
-            generateInterfaceSetters
+            generateInterfaceSetters,
+            includeImports,
+            includeEnumImports,
+            generateCustomAnnotations,
+            javaGenerateAllConstructor,
+            implementSerializable,
+            addGeneratedAnnotation,
+            addDeprecatedAnnotation
         );
 
         getLog().info("Codegen config: " + config);

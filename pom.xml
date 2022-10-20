@@ -49,7 +49,7 @@
         <dependency>
             <groupId>com.netflix.graphql.dgs.codegen</groupId>
             <artifactId>graphql-dgs-codegen-core</artifactId>
-            <version>5.1.2</version>
+            <version>5.4.0</version>
         </dependency>
     </dependencies>
 
