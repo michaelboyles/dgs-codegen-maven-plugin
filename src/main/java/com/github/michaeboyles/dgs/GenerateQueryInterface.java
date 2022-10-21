@@ -32,7 +32,7 @@ public class GenerateQueryInterface {
         return MethodSpec.methodBuilder(query.getName())
             .addAnnotation(DgsQuery.class)
             .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
-            .returns(convertType(query.getType(), false))
+            .returns(convertType(query.getType()))
             .addParameters(getParameters(query))
             .build();
     }
@@ -44,7 +44,7 @@ public class GenerateQueryInterface {
     }
 
     private ParameterSpec getParameter(InputValueDefinition valueDefinition) {
-        return ParameterSpec.builder(convertType(valueDefinition.getType(), false), valueDefinition.getName())
+        return ParameterSpec.builder(convertType(valueDefinition.getType()), valueDefinition.getName())
             .build();
     }
 }

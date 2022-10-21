@@ -8,20 +8,24 @@ import graphql.language.Type;
 import java.util.List;
 
 public class TypeUtil {
-    public static TypeName convertType(Type<?> type, boolean requiresBoxing) {
+    public static TypeName convertType(Type<?> type) {
+        return convertType(type, false, 0);
+    }
+
+    private static TypeName convertType(Type<?> type, boolean parentIsNonNull, int depth) {
         if (type instanceof graphql.language.TypeName) {
             graphql.language.TypeName t = (graphql.language.TypeName) type;
-            return getTypeForName(t.getName(), requiresBoxing);
+            return getTypeForName(t.getName(), !(depth == 1 && parentIsNonNull));
         }
         else if (type instanceof graphql.language.ListType) {
             graphql.language.ListType listType = (graphql.language.ListType) type;
             return ParameterizedTypeName.get(
-                ClassName.get(List.class), convertType(listType.getType(), true)
+                ClassName.get(List.class), convertType(listType.getType(), false, depth + 1)
             );
         }
         else if (type instanceof graphql.language.NonNullType) {
             graphql.language.NonNullType nonNullType = (graphql.language.NonNullType) type;
-            return convertType(nonNullType.getType(), requiresBoxing);
+            return convertType(nonNullType.getType(), true, depth + 1);
         }
         throw new RuntimeException("Unsupported type " + type.getClass());
     }
