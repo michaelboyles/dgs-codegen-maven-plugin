@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.github.michaeboyles.dgs.FileUtil.getCanonicalFile;
+import static com.github.michaeboyles.dgs.LanguageUtil.isProbablyKotlin;
 
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 @SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal", "MismatchedQueryAndUpdateOfCollection", "unused"})
@@ -39,10 +40,8 @@ public class GenerateMojo extends AbstractMojo
     @Parameter(defaultValue = "types")
     private String subPackageNameTypes;
 
-    // Gradle plugin also checks this: project.plugins.hasPlugin(KotlinPluginWrapper::class.java)
-    // but I don't know the equivalent and it seems good enough
     @Parameter
-    private String language = hasKotlinPluginWrapperClass() ? "KOTLIN" : "JAVA";
+    private String language = isProbablyKotlin() ? "KOTLIN" : "JAVA";
 
     @Parameter
     private Map<String, String> typeMapping = new HashMap<>();
@@ -171,15 +170,5 @@ public class GenerateMojo extends AbstractMojo
 
         new CodeGen(config).generate();
         project.addCompileSourceRoot(getCanonicalFile(outputDir).getAbsolutePath());
-    }
-
-    private boolean hasKotlinPluginWrapperClass() {
-        try {
-            getClass().getClassLoader().loadClass("org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper");
-            return true;
-        }
-        catch (Exception e) {
-            return false;
-        }
     }
 }

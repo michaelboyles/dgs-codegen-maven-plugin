@@ -1,8 +1,8 @@
 package com.github.michaeboyles.dgs;
 
+import com.netflix.graphql.dgs.codegen.Language;
 import com.squareup.javapoet.JavaFile;
 import graphql.language.Document;
-import graphql.language.ObjectTypeDefinition;
 import graphql.parser.MultiSourceReader;
 import graphql.parser.Parser;
 import org.apache.maven.plugin.AbstractMojo;
@@ -21,9 +21,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import static java.util.Collections.emptyList;
+import static com.github.michaeboyles.dgs.GenerateJavaInterfaces.generateJava;
+import static com.github.michaeboyles.dgs.LanguageUtil.isProbablyKotlin;
 
 @Mojo(name = "generate-interfaces", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public class GenerateInterfacesMojo extends AbstractMojo {
@@ -32,6 +32,9 @@ public class GenerateInterfacesMojo extends AbstractMojo {
 
     @Parameter(required = true)
     private String packageName;
+
+    @Parameter
+    private String language = isProbablyKotlin() ? "KOTLIN" : "JAVA";
 
     @Parameter(readonly = true, defaultValue = "${project}")
     private MavenProject project;
@@ -76,37 +79,14 @@ public class GenerateInterfacesMojo extends AbstractMojo {
 
     private void generateForDocument(Document document) throws IOException {
         Path outputDir = project.getBasedir().toPath().resolve("target/generated-sources/dgs-interfaces");
-        List<JavaFile> queryFiles = document.getDefinitionsOfType(ObjectTypeDefinition.class)
-            .stream()
-            .filter(def -> def.getName().equals("Query"))
-            .findAny()
-            .map(this::generateQueryInterfaces)
-            .orElse(emptyList());
-        List<JavaFile> mutationFiles = document.getDefinitionsOfType(ObjectTypeDefinition.class)
-            .stream()
-            .filter(def -> def.getName().equals("Mutation"))
-            .findAny()
-            .map(this::generateMutationInterfaces)
-            .orElse(emptyList());
-        for (JavaFile file : queryFiles) {
-            file.writeTo(outputDir);
+        if (Language.JAVA.name().equalsIgnoreCase(language)) {
+            List<JavaFile> files = generateJava(document, packageName);
+            for (JavaFile file : files) {
+                file.writeTo(outputDir);
+            }
         }
-        for (JavaFile file : mutationFiles) {
-            file.writeTo(outputDir);
+        else {
+            throw new RuntimeException("Kotlin not yet supported");
         }
-    }
-
-    private List<JavaFile> generateQueryInterfaces(ObjectTypeDefinition queryDef) {
-        GenerateQueryInterface generateQuery = new GenerateQueryInterface();
-        return queryDef.getFieldDefinitions().stream()
-            .map(def -> generateQuery.generate(packageName, def))
-            .collect(Collectors.toList());
-    }
-
-    private List<JavaFile> generateMutationInterfaces(ObjectTypeDefinition queryDef) {
-        GenerateMutationInterface generateMutation = new GenerateMutationInterface();
-        return queryDef.getFieldDefinitions().stream()
-            .map(def -> generateMutation.generate(packageName, def))
-            .collect(Collectors.toList());
     }
 }
