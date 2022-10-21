@@ -25,6 +25,7 @@
                     <execution>
                         <goals>
                             <goal>generate</goal>
+                            <goal>generate-interfaces</goal>
                         </goals>
                         <configuration>
                             <packageName>com.github.michaeboyles.dgs.generated</packageName>
@@ -61,6 +62,11 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
             <version>2.12.5</version>
+        </dependency>
+        <dependency>
+            <groupId>com.netflix.graphql.dgs.codegen</groupId>
+            <artifactId>graphql-dgs-codegen-client-core</artifactId>
+            <version>5.1.2</version>
         </dependency>
     </dependencies>
 </project>
