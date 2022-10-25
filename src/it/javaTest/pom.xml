@@ -1,0 +1,72 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.github.michaelboyles</groupId>
+    <artifactId>dgs-codegen-maven-plugin-integration-test</artifactId>
+    <version>1.0.0</version>
+    <name>Integration test</name>
+    <packaging>jar</packaging>
+    <description>Basic Java integration test</description>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.github.michaelboyles</groupId>
+                <artifactId>dgs-codegen-maven-plugin</artifactId>
+                <version>@project.version@</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                            <goal>generate-interfaces</goal>
+                        </goals>
+                        <configuration>
+                            <packageName>com.github.michaeboyles.dgs.generated</packageName>
+                            <generateBoxedTypes>true</generateBoxedTypes>
+                            <subPackageNameTypes>ty</subPackageNameTypes>
+                            <language>java</language>
+                            <generateBoxedTypes>true</generateBoxedTypes>
+                            <generateClient>true</generateClient>
+                            <generateInterfaces>true</generateInterfaces>
+                            <generateInterfaceSetters>false</generateInterfaceSetters>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <!-- Override the version of core specified by the plugin to a potentially newer one -->
+                    <dependency>
+                        <groupId>com.netflix.graphql.dgs.codegen</groupId>
+                        <artifactId>graphql-dgs-codegen-core</artifactId>
+                        <version>5.4.0</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency> <!-- Needed for some DGS generated classes -->
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.12.5</version>
+        </dependency>
+        <dependency>
+            <groupId>com.netflix.graphql.dgs.codegen</groupId>
+            <artifactId>graphql-dgs-codegen-client-core</artifactId>
+            <version>5.1.2</version>
+        </dependency>
+    </dependencies>
+</project>

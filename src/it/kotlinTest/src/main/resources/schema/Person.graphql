@@ -1,0 +1,14 @@
+type Query {
+  me: Person
+  you: Person
+}
+
+type Mutation {
+  setAge(name: String, age: Int): Person
+}
+
+type Person {
+  name: String
+  age: Int
+  likesDogs: Boolean
+}
