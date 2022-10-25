@@ -38,6 +38,7 @@
                     <execution>
                         <goals>
                             <goal>generate</goal>
+                            <goal>generate-interfaces</goal>
                         </goals>
                         <configuration>
                             <packageName>com.github.michaeboyles.dgs.generated</packageName>

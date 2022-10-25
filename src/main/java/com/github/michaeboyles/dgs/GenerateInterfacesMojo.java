@@ -1,7 +1,9 @@
 package com.github.michaeboyles.dgs;
 
+import com.github.michaeboyles.dgs.kotlin.KotlinInterfaces;
 import com.netflix.graphql.dgs.codegen.Language;
 import com.squareup.javapoet.JavaFile;
+import com.squareup.kotlinpoet.FileSpec;
 import graphql.language.Document;
 import graphql.parser.MultiSourceReader;
 import graphql.parser.Parser;
@@ -22,7 +24,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
 
-import static com.github.michaeboyles.dgs.GenerateJavaInterfaces.generateJava;
+import static com.github.michaeboyles.dgs.java.GenerateJavaInterfaces.generateJava;
 import static com.github.michaeboyles.dgs.LanguageUtil.isProbablyKotlin;
 
 @Mojo(name = "generate-interfaces", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
@@ -86,7 +88,10 @@ public class GenerateInterfacesMojo extends AbstractMojo {
             }
         }
         else {
-            throw new RuntimeException("Kotlin not yet supported");
+            List<FileSpec> files = KotlinInterfaces.generate(document, packageName);
+            for (FileSpec file : files) {
+                file.writeTo(outputDir);
+            }
         }
     }
 }

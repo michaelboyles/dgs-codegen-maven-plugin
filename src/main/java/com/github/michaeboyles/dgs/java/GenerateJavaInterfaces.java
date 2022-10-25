@@ -1,10 +1,10 @@
-package com.github.michaeboyles.dgs;
+package com.github.michaeboyles.dgs.java;
 
+import com.github.michaeboyles.dgs.GqlUtil;
 import com.squareup.javapoet.JavaFile;
 import graphql.language.Document;
 import graphql.language.ObjectTypeDefinition;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -12,17 +12,11 @@ import java.util.stream.Stream;
 import static java.util.Collections.emptyList;
 
 public class GenerateJavaInterfaces {
-    public static List<JavaFile> generateJava(Document document, String packageName) throws IOException {
-        List<JavaFile> queryFiles = document.getDefinitionsOfType(ObjectTypeDefinition.class)
-            .stream()
-            .filter(def -> def.getName().equals("Query"))
-            .findAny()
+    public static List<JavaFile> generateJava(Document document, String packageName) {
+        List<JavaFile> queryFiles = GqlUtil.getQuery(document)
             .map(def -> generateQueryInterfaces(packageName, def))
             .orElse(emptyList());
-        List<JavaFile> mutationFiles = document.getDefinitionsOfType(ObjectTypeDefinition.class)
-            .stream()
-            .filter(def -> def.getName().equals("Mutation"))
-            .findAny()
+        List<JavaFile> mutationFiles = GqlUtil.getMutation(document)
             .map(def -> generateMutationInterfaces(packageName, def))
             .orElse(emptyList());
         return Stream.concat(queryFiles.stream(), mutationFiles.stream())

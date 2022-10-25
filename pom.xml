@@ -62,6 +62,11 @@
             <version>1.13.0</version>
         </dependency>
         <dependency>
+            <groupId>com.squareup</groupId>
+            <artifactId>kotlinpoet</artifactId>
+            <version>1.12.0</version>
+        </dependency>
+        <dependency>
             <groupId>com.netflix.graphql.dgs</groupId>
             <artifactId>graphql-dgs</artifactId>
             <version>5.3.0</version>

@@ -1,4 +1,4 @@
-package com.github.michaeboyles.dgs;
+package com.github.michaeboyles.dgs.java;
 
 import com.netflix.graphql.dgs.DgsMutation;
 import com.squareup.javapoet.JavaFile;
@@ -12,9 +12,9 @@ import javax.lang.model.element.Modifier;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.github.michaeboyles.dgs.TypeUtil.convertType;
+import static com.github.michaeboyles.dgs.java.TypeUtil.convertType;
 
-public class GenerateMutationInterface {
+class GenerateMutationInterface {
     public JavaFile generate(String packageName, FieldDefinition query) {
         return JavaFile.builder(
             packageName,
