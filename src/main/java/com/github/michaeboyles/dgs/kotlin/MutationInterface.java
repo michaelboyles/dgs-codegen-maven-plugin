@@ -4,6 +4,7 @@ import com.github.michaeboyles.dgs.Packages;
 import com.netflix.graphql.dgs.DgsMutation;
 import com.squareup.kotlinpoet.FileSpec;
 import com.squareup.kotlinpoet.FunSpec;
+import com.squareup.kotlinpoet.KModifier;
 import com.squareup.kotlinpoet.ParameterSpec;
 import com.squareup.kotlinpoet.TypeSpec;
 import graphql.language.FieldDefinition;
@@ -31,6 +32,7 @@ class MutationInterface {
             .addFunction(
                 FunSpec.builder(query.getName())
                     .addAnnotation(DgsMutation.class)
+                    .addModifiers(KModifier.ABSTRACT)
                     .addParameters(getParameters(packages, query))
                     .returns(convertType(packages, query.getType()))
                     .build()
