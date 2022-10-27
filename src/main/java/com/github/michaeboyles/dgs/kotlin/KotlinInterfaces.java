@@ -1,6 +1,7 @@
 package com.github.michaeboyles.dgs.kotlin;
 
 import com.github.michaeboyles.dgs.GqlUtil;
+import com.github.michaeboyles.dgs.Packages;
 import com.squareup.kotlinpoet.FileSpec;
 import graphql.language.Document;
 import graphql.language.ObjectTypeDefinition;
@@ -12,26 +13,26 @@ import java.util.stream.Stream;
 import static java.util.Collections.emptyList;
 
 public class KotlinInterfaces {
-    public static List<FileSpec> generate(Document document, String packageName) {
+    public static List<FileSpec> generate(Document document, Packages packages) {
         List<FileSpec> queryFiles = GqlUtil.getQuery(document)
-            .map(def -> generateQueryInterfaces(packageName, def))
+            .map(def -> generateQueryInterfaces(packages, def))
             .orElse(emptyList());
         List<FileSpec> mutationFiles = GqlUtil.getMutation(document)
-            .map(def -> generateMutationInterfaces(packageName, def))
+            .map(def -> generateMutationInterfaces(packages, def))
             .orElse(emptyList());
         return Stream.concat(queryFiles.stream(), mutationFiles.stream())
             .collect(Collectors.toList());
     }
 
-    private static List<FileSpec> generateQueryInterfaces(String packageName, ObjectTypeDefinition queryDef) {
+    private static List<FileSpec> generateQueryInterfaces(Packages packages, ObjectTypeDefinition queryDef) {
         return queryDef.getFieldDefinitions().stream()
-            .map(def -> QueryInterface.generate(packageName, def))
+            .map(def -> QueryInterface.generate(packages, def))
             .collect(Collectors.toList());
     }
 
-    private static List<FileSpec> generateMutationInterfaces(String packageName, ObjectTypeDefinition queryDef) {
+    private static List<FileSpec> generateMutationInterfaces(Packages packages, ObjectTypeDefinition queryDef) {
         return queryDef.getFieldDefinitions().stream()
-            .map(def -> MutationInterface.generate(packageName, def))
+            .map(def -> MutationInterface.generate(packages, def))
             .collect(Collectors.toList());
     }
 }

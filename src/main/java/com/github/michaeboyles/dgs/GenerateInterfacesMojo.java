@@ -35,11 +35,17 @@ public class GenerateInterfacesMojo extends AbstractMojo {
     @Parameter(required = true)
     private String packageName;
 
+    @Parameter(defaultValue = "types")
+    private String subPackageNameTypes;
+
     @Parameter
     private String language = isProbablyKotlin() ? "KOTLIN" : "JAVA";
 
     @Parameter(readonly = true, defaultValue = "${project}")
     private MavenProject project;
+
+    @Parameter(defaultValue = "${project.build.directory}/generated-sources/annotations/")
+    private File outputDir;
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -48,6 +54,7 @@ public class GenerateInterfacesMojo extends AbstractMojo {
             MultiSourceReader reader = getReader(schemaPaths);
             Document document = new Parser().parseDocument(reader);
             generateForDocument(document);
+            project.addCompileSourceRoot(outputDir.toString());
         }
         catch (IOException e) {
             throw new MojoExecutionException(e.getMessage());
@@ -80,18 +87,21 @@ public class GenerateInterfacesMojo extends AbstractMojo {
     }
 
     private void generateForDocument(Document document) throws IOException {
-        Path outputDir = project.getBasedir().toPath().resolve("target/generated-sources/dgs-interfaces");
         if (Language.JAVA.name().equalsIgnoreCase(language)) {
-            List<JavaFile> files = JavaInterfaces.generate(document, packageName);
+            List<JavaFile> files = JavaInterfaces.generate(document, getPackages());
             for (JavaFile file : files) {
                 file.writeTo(outputDir);
             }
         }
         else {
-            List<FileSpec> files = KotlinInterfaces.generate(document, packageName);
+            List<FileSpec> files = KotlinInterfaces.generate(document, getPackages());
             for (FileSpec file : files) {
                 file.writeTo(outputDir);
             }
         }
+    }
+
+    private Packages getPackages() {
+        return new Packages(packageName, subPackageNameTypes);
     }
 }

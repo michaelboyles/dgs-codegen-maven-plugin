@@ -1,5 +1,6 @@
 package com.github.michaeboyles.dgs.java;
 
+import com.github.michaeboyles.dgs.Packages;
 import com.netflix.graphql.dgs.DgsMutation;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
@@ -15,11 +16,11 @@ import java.util.stream.Collectors;
 import static com.github.michaeboyles.dgs.java.TypeUtil.convertType;
 
 class MutationInterface {
-    public static JavaFile generate(String packageName, FieldDefinition query) {
+    public static JavaFile generate(Packages packages, FieldDefinition query) {
         return JavaFile.builder(
-            packageName,
+            packages.interfacePackage(),
             TypeSpec.interfaceBuilder(getClassName(query))
-                .addMethod(getMutationMethod(query))
+                .addMethod(getMutationMethod(packages, query))
                 .build()
         ).build();
     }
@@ -28,23 +29,23 @@ class MutationInterface {
         return Character.toUpperCase(query.getName().charAt(0)) + query.getName().substring(1) + "Mutation";
     }
 
-    private static MethodSpec getMutationMethod(FieldDefinition query) {
+    private static MethodSpec getMutationMethod(Packages packages, FieldDefinition query) {
         return MethodSpec.methodBuilder(query.getName())
             .addAnnotation(DgsMutation.class)
             .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
-            .returns(convertType(query.getType()))
-            .addParameters(getParameters(query))
+            .returns(convertType(packages, query.getType()))
+            .addParameters(getParameters(packages, query))
             .build();
     }
 
-    private static List<ParameterSpec> getParameters(FieldDefinition query) {
+    private static List<ParameterSpec> getParameters(Packages packages, FieldDefinition query) {
         return query.getInputValueDefinitions().stream()
-            .map(MutationInterface::getParameter)
+            .map(def -> getParameter(packages, def))
             .collect(Collectors.toList());
     }
 
-    private static ParameterSpec getParameter(InputValueDefinition valueDefinition) {
-        return ParameterSpec.builder(convertType(valueDefinition.getType()), valueDefinition.getName())
+    private static ParameterSpec getParameter(Packages packages, InputValueDefinition valueDefinition) {
+        return ParameterSpec.builder(convertType(packages, valueDefinition.getType()), valueDefinition.getName())
             .build();
     }
 }

@@ -69,6 +69,11 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.netflix.graphql.dgs</groupId>
+            <artifactId>graphql-dgs</artifactId>
+            <version>5.3.0</version>
+        </dependency>
         <dependency> <!-- Needed for some DGS generated classes -->
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>

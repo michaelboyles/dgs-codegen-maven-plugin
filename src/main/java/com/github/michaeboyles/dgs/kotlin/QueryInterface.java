@@ -1,5 +1,6 @@
 package com.github.michaeboyles.dgs.kotlin;
 
+import com.github.michaeboyles.dgs.Packages;
 import com.netflix.graphql.dgs.DgsQuery;
 import com.squareup.kotlinpoet.FileSpec;
 import com.squareup.kotlinpoet.FunSpec;
@@ -14,10 +15,10 @@ import java.util.stream.Collectors;
 import static com.github.michaeboyles.dgs.kotlin.TypeUtil.convertType;
 
 class QueryInterface {
-    public static FileSpec generate(String packageName, FieldDefinition queryDef) {
+    public static FileSpec generate(Packages packages, FieldDefinition queryDef) {
         String className = getClassName(queryDef);
-        return FileSpec.builder(packageName, className)
-            .addType(getInterfaceType(queryDef))
+        return FileSpec.builder(packages.interfacePackage(), className)
+            .addType(getInterfaceType(packages, queryDef))
             .build();
     }
 
@@ -25,26 +26,26 @@ class QueryInterface {
         return Character.toUpperCase(query.getName().charAt(0)) + query.getName().substring(1) + "Query";
     }
 
-    private static TypeSpec getInterfaceType(FieldDefinition query) {
+    private static TypeSpec getInterfaceType(Packages packages, FieldDefinition query) {
         return TypeSpec.interfaceBuilder(getClassName(query))
             .addFunction(
                 FunSpec.builder(query.getName())
                     .addAnnotation(DgsQuery.class)
-                    .addParameters(getParameters(query))
-                    .returns(convertType(query.getType()))
+                    .addParameters(getParameters(packages, query))
+                    .returns(convertType(packages, query.getType()))
                     .build()
             )
             .build();
     }
 
-    private static List<ParameterSpec> getParameters(FieldDefinition query) {
+    private static List<ParameterSpec> getParameters(Packages packages, FieldDefinition query) {
         return query.getInputValueDefinitions().stream()
-            .map(QueryInterface::getParameter)
+            .map(def -> getParameter(packages, def))
             .collect(Collectors.toList());
     }
 
-    private static ParameterSpec getParameter(InputValueDefinition valueDefinition) {
-        return ParameterSpec.builder(valueDefinition.getName(), convertType(valueDefinition.getType()))
+    private static ParameterSpec getParameter(Packages packages, InputValueDefinition valueDefinition) {
+        return ParameterSpec.builder(valueDefinition.getName(), convertType(packages, valueDefinition.getType()))
             .build();
     }
 }
