@@ -11,8 +11,8 @@ import java.util.stream.Stream;
 
 import static java.util.Collections.emptyList;
 
-public class GenerateJavaInterfaces {
-    public static List<JavaFile> generateJava(Document document, String packageName) {
+public class JavaInterfaces {
+    public static List<JavaFile> generate(Document document, String packageName) {
         List<JavaFile> queryFiles = GqlUtil.getQuery(document)
             .map(def -> generateQueryInterfaces(packageName, def))
             .orElse(emptyList());
@@ -24,16 +24,14 @@ public class GenerateJavaInterfaces {
     }
 
     private static List<JavaFile> generateQueryInterfaces(String packageName, ObjectTypeDefinition queryDef) {
-        GenerateQueryInterface generateQuery = new GenerateQueryInterface();
         return queryDef.getFieldDefinitions().stream()
-            .map(def -> generateQuery.generate(packageName, def))
+            .map(def -> QueryInterface.generate(packageName, def))
             .collect(Collectors.toList());
     }
 
     private static List<JavaFile> generateMutationInterfaces(String packageName, ObjectTypeDefinition queryDef) {
-        GenerateMutationInterface generateMutation = new GenerateMutationInterface();
         return queryDef.getFieldDefinitions().stream()
-            .map(def -> generateMutation.generate(packageName, def))
+            .map(def -> MutationInterface.generate(packageName, def))
             .collect(Collectors.toList());
     }
 }

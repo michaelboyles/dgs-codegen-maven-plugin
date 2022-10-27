@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 
 import static com.github.michaeboyles.dgs.java.TypeUtil.convertType;
 
-class GenerateQueryInterface {
-    public JavaFile generate(String packageName, FieldDefinition query) {
+class QueryInterface {
+    public static JavaFile generate(String packageName, FieldDefinition query) {
         return JavaFile.builder(
             packageName,
             TypeSpec.interfaceBuilder(getClassName(query))
@@ -24,11 +24,11 @@ class GenerateQueryInterface {
         ).build();
     }
 
-    private String getClassName(FieldDefinition query) {
+    private static String getClassName(FieldDefinition query) {
         return Character.toUpperCase(query.getName().charAt(0)) + query.getName().substring(1) + "Query";
     }
 
-    private MethodSpec getQueryMethod(FieldDefinition query) {
+    private static MethodSpec getQueryMethod(FieldDefinition query) {
         return MethodSpec.methodBuilder(query.getName())
             .addAnnotation(DgsQuery.class)
             .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
@@ -37,13 +37,13 @@ class GenerateQueryInterface {
             .build();
     }
 
-    private List<ParameterSpec> getParameters(FieldDefinition query) {
+    private static List<ParameterSpec> getParameters(FieldDefinition query) {
         return query.getInputValueDefinitions().stream()
-            .map(this::getParameter)
+            .map(QueryInterface::getParameter)
             .collect(Collectors.toList());
     }
 
-    private ParameterSpec getParameter(InputValueDefinition valueDefinition) {
+    private static ParameterSpec getParameter(InputValueDefinition valueDefinition) {
         return ParameterSpec.builder(convertType(valueDefinition.getType()), valueDefinition.getName())
             .build();
     }

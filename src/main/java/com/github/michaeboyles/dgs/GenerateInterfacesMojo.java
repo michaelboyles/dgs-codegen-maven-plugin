@@ -1,5 +1,6 @@
 package com.github.michaeboyles.dgs;
 
+import com.github.michaeboyles.dgs.java.JavaInterfaces;
 import com.github.michaeboyles.dgs.kotlin.KotlinInterfaces;
 import com.netflix.graphql.dgs.codegen.Language;
 import com.squareup.javapoet.JavaFile;
@@ -24,7 +25,6 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
 
-import static com.github.michaeboyles.dgs.java.GenerateJavaInterfaces.generateJava;
 import static com.github.michaeboyles.dgs.LanguageUtil.isProbablyKotlin;
 
 @Mojo(name = "generate-interfaces", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
@@ -82,7 +82,7 @@ public class GenerateInterfacesMojo extends AbstractMojo {
     private void generateForDocument(Document document) throws IOException {
         Path outputDir = project.getBasedir().toPath().resolve("target/generated-sources/dgs-interfaces");
         if (Language.JAVA.name().equalsIgnoreCase(language)) {
-            List<JavaFile> files = generateJava(document, packageName);
+            List<JavaFile> files = JavaInterfaces.generate(document, packageName);
             for (JavaFile file : files) {
                 file.writeTo(outputDir);
             }
