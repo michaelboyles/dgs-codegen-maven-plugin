@@ -9,26 +9,27 @@ import graphql.language.Type;
 
 import java.util.List;
 
+import static java.util.Collections.emptyList;
+
 class TypeUtil {
     public static TypeName convertType(Type<?> type) {
-        return convertType(type, false, 0);
+        return convertType(type, false);
     }
 
-    // TODO fix nullity
-    private static TypeName convertType(Type<?> type, boolean parentIsNonNull, int depth) {
+    private static TypeName convertType(Type<?> type, boolean parentIsNonNull) {
         if (type instanceof graphql.language.TypeName) {
             graphql.language.TypeName t = (graphql.language.TypeName) type;
-            return getTypeForName(t.getName());
+            return getTypeForName(t.getName()).copy(!parentIsNonNull, emptyList());
         }
         else if (type instanceof graphql.language.ListType) {
             graphql.language.ListType listType = (graphql.language.ListType) type;
             return ParameterizedTypeName.get(
-                ClassName.bestGuess(List.class.getName()), convertType(listType.getType(), false, depth + 1)
+                ClassName.bestGuess(List.class.getName()), convertType(listType.getType(), false)
             );
         }
         else if (type instanceof graphql.language.NonNullType) {
             graphql.language.NonNullType nonNullType = (graphql.language.NonNullType) type;
-            return convertType(nonNullType.getType(), true, depth + 1);
+            return convertType(nonNullType.getType(), true);
         }
         throw new RuntimeException("Unsupported type " + type.getClass());
     }

@@ -1,14 +1,16 @@
 type Query {
   me: Person
   you: Person
+  everyone: [Person!]!
 }
 
 type Mutation {
-  setAge(name: String, age: Int): Person
+  setAge(name: String!, age: Int): Person
 }
 
 type Person {
   name: String
   age: Int
   likesDogs: Boolean
+  friends: [Person!]!
 }
