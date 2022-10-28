@@ -32,7 +32,7 @@ class QueryInterface {
             .addFunction(
                 FunSpec.builder(query.getName())
                     .addAnnotation(DgsQuery.class)
-                    .addModifiers(KModifier.ABSTRACT)
+                    .addModifiers(KModifier.PUBLIC, KModifier.ABSTRACT)
                     .addParameters(getParameters(packages, query))
                     .returns(convertType(packages, query.getType()))
                     .build()

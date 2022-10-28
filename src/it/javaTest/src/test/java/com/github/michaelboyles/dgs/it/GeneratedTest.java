@@ -3,8 +3,8 @@ package com.github.michaelboyles.dgs.it;
 import org.junit.Test;
 
 import com.github.michaeboyles.dgs.generated.DgsConstants;
-import com.github.michaeboyles.dgs.generated.ty.IPerson;
-import com.github.michaeboyles.dgs.generated.ty.Person;
+import com.github.michaeboyles.dgs.generated.sub.IPerson;
+import com.github.michaeboyles.dgs.generated.sub.Person;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

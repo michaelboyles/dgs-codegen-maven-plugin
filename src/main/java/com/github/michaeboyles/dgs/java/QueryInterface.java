@@ -20,6 +20,7 @@ class QueryInterface {
         return JavaFile.builder(
             packages.interfacePackage(),
             TypeSpec.interfaceBuilder(getClassName(query))
+                .addModifiers(Modifier.PUBLIC)
                 .addMethod(getQueryMethod(packages, query))
                 .build()
         ).build();

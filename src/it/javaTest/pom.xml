@@ -30,7 +30,7 @@
                         <configuration>
                             <packageName>com.github.michaeboyles.dgs.generated</packageName>
                             <generateBoxedTypes>true</generateBoxedTypes>
-                            <subPackageNameTypes>ty</subPackageNameTypes>
+                            <subPackageNameTypes>sub</subPackageNameTypes>
                             <language>java</language>
                             <generateBoxedTypes>true</generateBoxedTypes>
                             <generateClient>true</generateClient>

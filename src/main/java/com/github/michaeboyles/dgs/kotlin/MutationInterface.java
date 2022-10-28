@@ -32,7 +32,7 @@ class MutationInterface {
             .addFunction(
                 FunSpec.builder(query.getName())
                     .addAnnotation(DgsMutation.class)
-                    .addModifiers(KModifier.ABSTRACT)
+                    .addModifiers(KModifier.PUBLIC, KModifier.ABSTRACT)
                     .addParameters(getParameters(packages, query))
                     .returns(convertType(packages, query.getType()))
                     .build()

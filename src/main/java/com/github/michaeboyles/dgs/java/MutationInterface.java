@@ -20,6 +20,7 @@ class MutationInterface {
         return JavaFile.builder(
             packages.interfacePackage(),
             TypeSpec.interfaceBuilder(getClassName(query))
+                .addModifiers(Modifier.PUBLIC)
                 .addMethod(getMutationMethod(packages, query))
                 .build()
         ).build();
