@@ -39,38 +39,38 @@ public class KotlinInterfaces {
             .collect(Collectors.toList());
     }
 
-    private static List<FileSpec> generateMutationInterfaces(Packages packages, ObjectTypeDefinition queryDef) {
-        return queryDef.getFieldDefinitions().stream()
+    private static List<FileSpec> generateMutationInterfaces(Packages packages, ObjectTypeDefinition mutationDef) {
+        return mutationDef.getFieldDefinitions().stream()
             .map(def -> generate(packages, def, DgsMutation.class, "Mutation"))
             .collect(Collectors.toList());
     }
 
-    public static FileSpec generate(Packages packages, FieldDefinition queryDef, Class<?> annotation, String suffix) {
-        String className = getClassName(queryDef, suffix);
+    public static FileSpec generate(Packages packages, FieldDefinition fieldDef, Class<?> annotation, String suffix) {
+        String className = getClassName(fieldDef, suffix);
         return FileSpec.builder(packages.interfacePackage(), className)
-            .addType(getInterfaceType(packages, queryDef, annotation, suffix))
+            .addType(getInterfaceType(packages, fieldDef, annotation, suffix))
             .build();
     }
 
-    private static String getClassName(FieldDefinition query, String suffix) {
-        return Character.toUpperCase(query.getName().charAt(0)) + query.getName().substring(1) + suffix;
+    private static String getClassName(FieldDefinition fieldDef, String suffix) {
+        return Character.toUpperCase(fieldDef.getName().charAt(0)) + fieldDef.getName().substring(1) + suffix;
     }
 
-    private static TypeSpec getInterfaceType(Packages packages, FieldDefinition query, Class<?> annotation, String suffix) {
-        return TypeSpec.interfaceBuilder(getClassName(query, suffix))
+    private static TypeSpec getInterfaceType(Packages packages, FieldDefinition fieldDef, Class<?> annotation, String suffix) {
+        return TypeSpec.interfaceBuilder(getClassName(fieldDef, suffix))
             .addFunction(
-                FunSpec.builder(query.getName())
+                FunSpec.builder(fieldDef.getName())
                     .addAnnotation(annotation)
                     .addModifiers(KModifier.PUBLIC, KModifier.ABSTRACT)
-                    .addParameters(getParameters(packages, query))
-                    .returns(convertType(packages, query.getType()))
+                    .addParameters(getParameters(packages, fieldDef))
+                    .returns(convertType(packages, fieldDef.getType()))
                     .build()
             )
             .build();
     }
 
-    private static List<ParameterSpec> getParameters(Packages packages, FieldDefinition query) {
-        return query.getInputValueDefinitions().stream()
+    private static List<ParameterSpec> getParameters(Packages packages, FieldDefinition fieldDef) {
+        return fieldDef.getInputValueDefinitions().stream()
             .map(def -> getParameter(packages, def))
             .collect(Collectors.toList());
     }
