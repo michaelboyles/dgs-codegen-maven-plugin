@@ -7,6 +7,10 @@ type Mutation {
   setAge(name: String, age: Int): Person
 }
 
+type Subscription {
+  activeUsers: [Person!]!
+}
+
 type Person {
   name: String
   age: Int

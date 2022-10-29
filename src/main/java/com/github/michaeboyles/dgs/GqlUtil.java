@@ -19,4 +19,11 @@ public class GqlUtil {
             .filter(def -> def.getName().equals("Mutation"))
             .findAny();
     }
+
+    public static Optional<ObjectTypeDefinition> getSubscription(Document document) {
+        return document.getDefinitionsOfType(ObjectTypeDefinition.class)
+            .stream()
+            .filter(def -> def.getName().equals("Subscription"))
+            .findAny();
+    }
 }
