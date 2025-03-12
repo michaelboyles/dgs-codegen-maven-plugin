@@ -1,4 +1,10 @@
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/michaelboyles/dgs-codegen-maven-plugin/maven.yml?branch=develop)](https://github.com/michaelboyles/dgs-codegen-maven-plugin/actions) [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/michaelboyles/dgs-codegen-maven-plugin?sort=semver)](https://github.com/michaelboyles/dgs-codegen-maven-plugin/releases) [![License](https://img.shields.io/github/license/michaelboyles/dgs-codegen-maven-plugin)](https://github.com/michaelboyles/dgs-codegen-maven-plugin/blob/develop/LICENSE)
+**No longer maintained**
+
+You can try https://github.com/deweyjose/graphqlcodegen 
+
+---
+
+[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/michaelboyles/dgs-codegen-maven-plugin?sort=semver)](https://github.com/michaelboyles/dgs-codegen-maven-plugin/releases) [![License](https://img.shields.io/github/license/michaelboyles/dgs-codegen-maven-plugin)](https://github.com/michaelboyles/dgs-codegen-maven-plugin/blob/develop/LICENSE)
 
 A Maven port of Netflix's [DGS codegen gradle plugin](https://github.com/Netflix/dgs-codegen).
 The core code to generate the classes [already exists as its own module](https://github.com/Netflix/dgs-codegen/tree/master/graphql-dgs-codegen-core),
